@@ -1,5 +1,6 @@
 # Root folders
 /node_modules
+/.vscode
 
 # Client folders
 /client/node_modules
