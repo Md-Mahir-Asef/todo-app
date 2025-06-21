@@ -1,11 +1,8 @@
 import { Router } from "express";
+import tasksRoute from "./tasks.route";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    msg: "Hello World!",
-  });
-});
+router.use("/tasks", tasksRoute);
 
 export default router;
