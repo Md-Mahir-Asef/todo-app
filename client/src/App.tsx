@@ -1,9 +1,18 @@
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { Create } from "./pages/Create";
+
 function App() {
   return (
     <>
-      <div className="flex justify-center">
-        <h1 className="text-5xl font-bold">To-do App</h1>
-      </div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />\
+        <Route path="/create" element={<Create />} />
+      </Routes>
+      <Footer />
     </>
   );
 }

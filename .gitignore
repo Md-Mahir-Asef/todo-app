@@ -9,3 +9,4 @@
 # Server folders
 /server/node_modules
 /server/.env
+/server/src/generated/prisma

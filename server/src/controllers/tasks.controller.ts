@@ -15,17 +15,24 @@ export const createTask = async (req: Request, res: Response) => {
   try {
     const { title, description, priority, dueDate, status }: TaskType =
       req.body;
+    var newDueDate: string | undefined;
+    if (dueDate) {
+      newDueDate = new Date(dueDate).toISOString();
+    }
+    const data = {
+      title,
+      description,
+      priority,
+      dueDate: newDueDate,
+      status,
+    };
     const newTask = await prisma.tasks.create({
-      data: {
-        title,
-        description,
-        priority,
-        dueDate,
-        status,
-      },
+      data,
     });
     res.json(newTask);
+    console.log("Task generated!");
   } catch (err) {
     res.json(err);
+    console.log(err);
   }
 };
