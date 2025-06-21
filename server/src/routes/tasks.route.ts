@@ -1,11 +1,9 @@
 import { Router } from "express";
+import { Request, Response } from "express";
+import { getAllTasks } from "../controllers/tasks.controller";
 
 const tasksRoute = Router();
 
-tasksRoute.get("/", (req, res)=> {
-    res.json({
-        "data": "data"
-    });
-});
+tasksRoute.get("/", getAllTasks);
 
 export default tasksRoute;
