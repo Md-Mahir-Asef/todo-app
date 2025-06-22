@@ -12,8 +12,8 @@ export function Create() {
     e.preventDefault();
     console.log("Create Task Called!");
     try {
-      // const baseUrl = process.env.REACT_APP_API_BASE_URL;
-      const response = await axios.post(`http://localhost:8000/api/tasks`, {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await axios.post(`${baseUrl}/tasks`, {
         title,
         description,
         priority,

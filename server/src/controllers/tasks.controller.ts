@@ -30,7 +30,6 @@ export const createTask = async (req: Request, res: Response) => {
       data,
     });
     res.json(newTask);
-    console.log("Task generated!");
   } catch (err) {
     res.json(err);
     console.log(err);
