@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import type { TaskType } from "../../types/tasks.type";
+import type { TaskType } from "../../types/tasks";
 
 export function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
