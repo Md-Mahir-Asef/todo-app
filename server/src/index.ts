@@ -1,7 +1,7 @@
 import app from "./app";
 import { config } from "dotenv";
 import logger from "./utils/logger";
-import prisma from "./lib/prisma";
+import prisma from "./utils/prisma";
 
 config();
 
