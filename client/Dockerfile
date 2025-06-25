@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 5173
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "vite" ]

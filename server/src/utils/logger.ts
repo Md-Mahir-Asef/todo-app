@@ -16,7 +16,7 @@ const consoleLogFormat = format.combine(
   format.printf(({ timestamp, level, message, ...meta }) => {
     const levelColored = colorizer.colorize(level, `${level.toUpperCase()}`);
     const metaString = Object.keys(meta).length ? JSON.stringify(meta) : "";
-    
+
     return `${timestamp} [${levelColored}]: ${message} ${metaString}`;
   })
 );
@@ -36,6 +36,7 @@ const logger = createLogger({
       maxSize: "10m",
       maxFiles: "15d",
       level: "info",
+      auditFile: "../../logs/.audit.json",
     }),
     new DailyRotateFile({
       dirname: "logs",
@@ -45,6 +46,7 @@ const logger = createLogger({
       maxSize: "10m",
       maxFiles: "30d",
       level: "error",
+      auditFile: "../../logs/.audit.json",
     }),
   ],
   exitOnError: false,
