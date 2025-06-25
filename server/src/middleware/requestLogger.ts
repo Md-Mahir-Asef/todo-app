@@ -10,9 +10,8 @@ export const requestLogger = (
   res.on("finish", () => {
     const duration = Date.now() - start;
     logger.info(
-      `${req.ip} ${req.method} ${req.originalUrl} ${req.statusCode} - ${duration}ms`
+      `${res.statusCode} ${req.method} from ${req.ip} ${req.originalUrl} - ${duration}ms`
     );
   });
   next();
 };
- 

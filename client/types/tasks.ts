@@ -8,4 +8,6 @@ export type TaskType = {
   priority?: Priority;
   dueDate?: string;
   status?: TaskStatus;
+  createdAt: string;
+  updatedAt: string;
 };

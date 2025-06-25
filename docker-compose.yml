@@ -12,6 +12,8 @@ services:
       - ./client:/app
       - /app/node_modules
     restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true
   server:
     build: ./server
     container_name: todo_server

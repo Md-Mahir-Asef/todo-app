@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 5173
 
-ENTRYPOINT [ "vite" ]
+ENTRYPOINT [ "npm", "run", "dev" ]
