@@ -5,7 +5,7 @@ import prisma from "./utils/prisma";
 
 config();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.SERVER_PORT || 4000;
 
 const server = app.listen(PORT, () => {
   logger.info(`Server is running on http://localhost:${PORT}`);
