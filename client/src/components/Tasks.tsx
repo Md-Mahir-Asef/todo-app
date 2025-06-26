@@ -2,18 +2,26 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import type { TaskType } from "../../types/tasks";
 
+type SortableFeilds = "priority" | "dueDate" | "createdAt" | "updatedAt";
+type SortOrderType = "desc" | "asc";
+
 export function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sortFeild, setSortFeild] = useState<SortableFeilds>("createdAt");
+  const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
 
   useEffect(() => {
     const loadTasks = async () => {
       try {
-        console.log("Inside loadTasks.");
         const baseUrl = import.meta.env.VITE_API_BASE_URL;
-        const res = await axios.get<TaskType[]>(`${baseUrl}/tasks`);
+        const res = await axios.get<TaskType[]>(`${baseUrl}/tasks`, {
+          params: {
+            sortedBy: sortFeild,
+            sortOrder: sortOrder,
+          },
+        });
         setTasks(res.data);
-        console.log(res.data);
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.log(err.message);
@@ -25,7 +33,7 @@ export function Tasks() {
       }
     };
     loadTasks();
-  }, []);
+  }, [sortFeild, sortOrder]);
   if (loading) return <p>Loading...</p>;
   return (
     <>
@@ -43,6 +51,7 @@ export function Tasks() {
             id="sortField"
             defaultValue="createdAt"
             style={{ padding: "4px 8px" }}
+            onChange={(e) => setSortFeild(e.target.value as SortableFeilds)}
           >
             <option value="priority">Priority</option>
             <option value="dueDate">Due Date</option>
@@ -54,6 +63,7 @@ export function Tasks() {
             id="sortOrder"
             defaultValue="desc"
             style={{ padding: "4px 8px" }}
+            onChange={(e) => setSortOrder(e.target.value as SortOrderType)}
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>

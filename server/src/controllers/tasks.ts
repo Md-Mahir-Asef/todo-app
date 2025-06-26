@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../utils/prisma";
 import { TaskType } from "../utils/types/tasks";
 import logger from "../utils/logger";
+import { Prisma } from "../generated/prisma";
 
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
@@ -11,14 +12,17 @@ export const getAllTasks = async (req: Request, res: Response) => {
       entity: "Task",
       arrLen: tasks.length,
     });
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (err) {
     logger.error("Failed to get all tasks", {
-      aciton: "READ",
+      action: "READ",
       entity: "Task",
       error: err,
     });
-    res.json(err);
+    res.status(500).json({
+      message: "Failed to get all tasks.",
+      error: err instanceof Error ? err.message : "Unknown Error Occured.",
+    });
   }
 };
 
@@ -46,9 +50,8 @@ export const createTask = async (req: Request, res: Response) => {
       taskId: newTask.id,
       taskTitle: newTask.title,
     });
-    res.json(newTask);
+    res.status(200).json(newTask);
   } catch (err) {
-    res.json(err);
     logger.error("Failed to create Task", {
       action: "CREATE",
       entity: "Task",
@@ -58,6 +61,35 @@ export const createTask = async (req: Request, res: Response) => {
       },
 
       error: err,
+    });
+    res.status(500).json({
+      message: "Failed to create a task.",
+      error: err instanceof Error ? err.message : "Unknown Error Occured.",
+    });
+  }
+};
+
+export const getSortedTasks = async (req: Request, res: Response) => {
+  try {
+    const sortedBy = req.params.sortedBy;
+    const sortOrder = req.params.sortOrder;
+    const tasks = await prisma.tasks.findMany({
+      orderBy: {
+        [sortedBy]: sortOrder,
+      },
+    });
+    logger.info("Found sorted tasks.", {
+      action: "READ",
+      entity: "Task",
+      arrLen: tasks.length,
+    });
+    res.status(200).json(tasks);
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "Unknown Error Occured.";
+    logger.error("Failed to get sorted tasks.", {
+      action: "READ",
+      entity: "Task",
+      error,
     });
   }
 };

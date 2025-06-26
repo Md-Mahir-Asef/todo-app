@@ -2,7 +2,8 @@ import { faker } from "@faker-js/faker";
 import prisma from "../src/utils/prisma";
 import logger from "../src/utils/logger";
 
-const TODOS_PER_USER = 5;
+const TODOS_PER_USER = 50;
+
 async function main() {
   try {
     await prisma.tasks.deleteMany();
@@ -11,7 +12,7 @@ async function main() {
         data: {
           title: faker.word.verb(),
           description: faker.commerce.productDescription(),
-          dueDate: new Date(faker.date.future()).toISOString(),
+          dueDate: new Date(faker.date.anytime()).toISOString(),
         },
       });
     }
