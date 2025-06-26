@@ -2,38 +2,37 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import type { TaskType } from "../../types/tasks";
 
-type SortableFeilds = "priority" | "dueDate" | "createdAt" | "updatedAt";
-type SortOrderType = "desc" | "asc";
-
 export function Tasks() {
+  type SortableFeilds = "priority" | "dueDate" | "createdAt" | "updatedAt";
+  type SortOrderType = "desc" | "asc";
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortFeild, setSortFeild] = useState<SortableFeilds>("createdAt");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const loadTasks = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get<TaskType[]>(
+        `${baseUrl}/tasks/${sortFeild}/${sortOrder}`
+      );
+      setTasks(res.data);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err.message);
+      } else {
+        console.log(err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const baseUrl = import.meta.env.VITE_API_BASE_URL;
-        const res = await axios.get<TaskType[]>(`${baseUrl}/tasks`, {
-          params: {
-            sortedBy: sortFeild,
-            sortOrder: sortOrder,
-          },
-        });
-        setTasks(res.data);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.log(err.message);
-        } else {
-          console.log(err);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
     loadTasks();
   }, [sortFeild, sortOrder]);
+
   if (loading) return <p>Loading...</p>;
   return (
     <>
@@ -49,24 +48,28 @@ export function Tasks() {
           <label htmlFor="sortField">Sort By:</label>
           <select
             id="sortField"
-            defaultValue="createdAt"
             style={{ padding: "4px 8px" }}
-            onChange={(e) => setSortFeild(e.target.value as SortableFeilds)}
+            value={sortFeild}
+            onChange={(event) => {
+              setSortFeild(event.target.value as SortableFeilds);
+            }}
           >
-            <option value="priority">Priority</option>
-            <option value="dueDate">Due Date</option>
             <option value="createdAt">Created At</option>
             <option value="updatedAt">Updated At</option>
+            <option value="dueDate">Due Date</option>
+            <option value="priority">Priority</option>
           </select>
 
           <select
             id="sortOrder"
-            defaultValue="desc"
             style={{ padding: "4px 8px" }}
-            onChange={(e) => setSortOrder(e.target.value as SortOrderType)}
+            value={sortOrder}
+            onChange={(event) => {
+              setSortOrder(event.target.value as SortOrderType);
+            }}
           >
-            <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
           </select>
         </div>
         {tasks.map((task) => {

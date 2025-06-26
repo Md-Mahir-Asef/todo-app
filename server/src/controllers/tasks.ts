@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import prisma from "../utils/prisma";
 import { TaskType } from "../utils/types/tasks";
 import logger from "../utils/logger";
-import { Prisma } from "../generated/prisma";
 
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
