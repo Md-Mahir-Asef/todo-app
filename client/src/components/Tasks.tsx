@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import type { TaskType } from "../../types/tasks";
+import { DialogBox } from "./DialogueBox";
+import { useNavigate } from "react-router-dom";
 
 export function Tasks() {
-  type SortableFeilds = "priority" | "dueDate" | "createdAt" | "updatedAt";
+  type SortableFeilds =
+    | "priority"
+    | "dueDate"
+    | "createdAt"
+    | "updatedAt"
+    | "status";
   type SortOrderType = "desc" | "asc";
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [sortFeild, setSortFeild] = useState<SortableFeilds>("createdAt");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
+  const [showDeleteDialogue, setShowDeleteDialogue] = useState<boolean>(false);
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const loadTasks = async () => {
@@ -26,6 +35,21 @@ export function Tasks() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const deletedTask = await axios.delete<TaskType>(
+        `${baseUrl}/tasks/${id}`
+      );
+      console.log(deletedTask);
+      setShowDeleteDialogue(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -58,6 +82,7 @@ export function Tasks() {
             <option value="updatedAt">Updated At</option>
             <option value="dueDate">Due Date</option>
             <option value="priority">Priority</option>
+            <option value="status">Status</option>
           </select>
 
           <select
@@ -89,7 +114,7 @@ export function Tasks() {
                 {task.description ? task.description : "No description"}
               </p>
 
-              <div className="grid grid-cols-3 gap-y-1 text-sm text-gray-700">
+              <div className="grid grid-cols-3 gap-y-1 text-sm text-gray-700 mb-3">
                 <p>
                   <span className="font-semibold text-gray-600">Priority:</span>{" "}
                   {task.priority}
@@ -108,6 +133,28 @@ export function Tasks() {
                     ? new Date(task.dueDate).toLocaleDateString()
                     : "None"}
                 </p>
+              </div>
+
+              {/* Buttons container */}
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => navigate("/update", { state: task })}
+                  className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={() => handleDelete(task.id)}
+                  className="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                >
+                  Delete
+                </button>
+                {showDeleteDialogue && (
+                  <DialogBox
+                    message="Task Deleted"
+                    onClose={() => setShowDeleteDialogue(false)}
+                  />
+                )}
               </div>
             </div>
           );

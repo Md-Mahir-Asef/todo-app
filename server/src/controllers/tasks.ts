@@ -43,10 +43,9 @@ export const createTask = async (req: Request, res: Response) => {
     const newTask = await prisma.tasks.create({
       data,
     });
-    logger.info(`Created a Task`, {
+    logger.info(`CREATED TASK ${newTask.id} .`, {
       action: "CREATE",
       entity: "Task",
-      taskId: newTask.id,
       taskTitle: newTask.title,
     });
     res.status(200).json(newTask);
@@ -77,7 +76,7 @@ export const getSortedTasks = async (req: Request, res: Response) => {
         [sortedBy]: sortOrder,
       },
     });
-    logger.info("Found sorted tasks.", {
+    logger.info("FOUND sorted tasks.", {
       action: "READ",
       entity: "Task",
       arrLen: tasks.length,
@@ -89,6 +88,72 @@ export const getSortedTasks = async (req: Request, res: Response) => {
       action: "READ",
       entity: "Task",
       error,
+    });
+  }
+};
+
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const { title, description, priority, dueDate, status } = req.body;
+    var newDueDate = new Date(dueDate).toISOString();
+    const updatedTask = await prisma.tasks.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title,
+        description,
+        priority,
+        dueDate: newDueDate,
+        status,
+      },
+    });
+    logger.info(`UPDATED TASK ${updatedTask.id} .`, {
+      action: "UPDATE",
+      entity: "Task",
+      taskTitle: updatedTask.title,
+    });
+    res.status(200).json(updatedTask);
+  } catch (err) {
+    logger.error("Failed to update task.", {
+      action: "UPDATE",
+      entity: "Task",
+      id: req.params.id,
+      error: err,
+    });
+    res.status(500).json({
+      message: "Failed to update task.",
+      error: err instanceof Error ? err.message : "Unknown Error Occured.",
+    });
+  }
+};
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const deletedTask = await prisma.tasks.delete({
+      where: {
+        id,
+      },
+    });
+    logger.info(`DELETED TASK ${deletedTask.id}`, {
+      action: "DELETE",
+      entity: "Task",
+      id: deletedTask.id,
+      title: deletedTask.title,
+    });
+    res.status(200).json(deletedTask);
+  } catch (err) {
+    logger.error("Failed to DELETE task.", {
+      action: "DELETE",
+      entity: "Task",
+      id: req.params.id,
+      error: err,
+    });
+    res.status(500).json({
+      message: "Failed to DELETE task.",
+      error: err instanceof Error ? err.message : "Unknown Error Occured.",
     });
   }
 };

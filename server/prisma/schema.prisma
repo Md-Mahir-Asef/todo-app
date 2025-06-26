@@ -32,8 +32,8 @@ enum TaskStatus {
 }
 
 enum Priority {
-  Not_set
-  Low
-  Medium
   High
+  Medium
+  Low
+  Not_set
 }

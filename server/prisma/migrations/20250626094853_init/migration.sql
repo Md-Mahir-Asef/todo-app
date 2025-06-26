@@ -2,7 +2,7 @@
 CREATE TYPE "TaskStatus" AS ENUM ('Todo', 'Doing', 'Done');
 
 -- CreateEnum
-CREATE TYPE "Priority" AS ENUM ('Not_set', 'Low', 'Medium', 'High');
+CREATE TYPE "Priority" AS ENUM ('High', 'Medium', 'Low', 'Not_set');
 
 -- CreateTable
 CREATE TABLE "Tasks" (

@@ -10,6 +10,7 @@ export function Create() {
   const [priority, setPriority] = useState("Not_set");
   const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState("Todo");
+
   const createTask = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Create Task Called!");
@@ -29,77 +30,131 @@ export function Create() {
     }
     console.log(title, description, priority, dueDate, status);
   };
+
   return (
-    <>
-      <div className="flex flex-col items-center gap-0 justify-center">
-        <h1 className="text-3xl font-bold h-fit block w-full text-center">
-          Create a new task
-        </h1>
-        <form className="h-fit">
-          <label htmlFor="title" className="text-xl">
-            Title:
-          </label>
-          <input
-            type="text"
-            id="title"
-            required
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full h-10 border border-gray-300 text-black p-2 rounded"
-          />
-          <label htmlFor="description" className="text-xl">
-            Description:
-          </label>
-          <input
-            type="text"
-            id="description"
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full h-20 border border-gray-300 text-black overflow-x-scroll rounded break-words"
-          />
-          <label htmlFor="priority" className="text-xl">
-            Priority:
-          </label>
-          <select
-            name="priority"
-            id="priority"
-            onChange={(e) => setPriority(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 text-black"
-          >
-            <option value="Not_set">Not set</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-          <label htmlFor="dueDate" className="text-xl">
-            Due Date
-          </label>
-          <input
-            className="w-full h-10 border border-gray-300 text-black rounded p-2"
-            onChange={(e) => setDueDate(e.target.value)}
-            type="date"
-            id="dueDate"
-          />
-          <label htmlFor="status" className="text-xl">
-            Status:
-          </label>
-          <select
-            name="status"
-            id="status"
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 text-black"
-          >
-            <option value="Todo">Todo</option>
-            <option value="Doing">Doing</option>
-            <option value="Done">Done</option>
-          </select>
-          <button
-            type="submit"
-            onClick={createTask}
-            className="mt-5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-          >
-            Create Task
-          </button>
-        </form>
+    <div className="min-h-screen py-12 px-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-xl p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              Create New Task
+            </h1>
+            <p className="text-gray-600">
+              Add a new task to your productivity workflow
+            </p>
+          </div>
+
+          <form onSubmit={createTask} className="space-y-6">
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Task Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter task title..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 placeholder-gray-400"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                rows={4}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe your task..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 placeholder-gray-400 resize-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="priority"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Priority
+                </label>
+                <select
+                  id="priority"
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 bg-white"
+                >
+                  <option value="Not_set">Not set</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="status"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Status
+                </label>
+                <select
+                  id="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 bg-white"
+                >
+                  <option value="Todo">Todo</option>
+                  <option value="Doing">Doing</option>
+                  <option value="Done">Done</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="dueDate"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Due Date
+              </label>
+              <input
+                type="date"
+                id="dueDate"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition-all duration-200"
+            >
+              Create Task
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => navigate("/")}
+              className="text-gray-500 hover:text-gray-700 transition-colors duration-200 text-sm"
+            >
+              ← Back to tasks
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
