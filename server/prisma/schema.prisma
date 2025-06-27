@@ -14,7 +14,7 @@ datasource db {
   url      = env("SERVER_DATABASE_URL")
 }
 
-model Tasks {
+model Task {
   id String @id @default(uuid())
   title String 
   description String?
@@ -23,6 +23,16 @@ model Tasks {
   priority Priority @default(Not_set)
   dueDate DateTime?
   status TaskStatus @default(Todo)
+  user User @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model User {
+  id String @id @default(uuid())
+  name String 
+  email String @unique
+  password String  
+  tasks Task[]
 }
 
 enum TaskStatus {
