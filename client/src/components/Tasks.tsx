@@ -24,7 +24,8 @@ export function Tasks() {
     try {
       setLoading(true);
       const res = await axios.get<TaskType[]>(
-        `${baseUrl}/tasks/${sortFeild}/${sortOrder}`
+        `${baseUrl}/tasks/${sortFeild}/${sortOrder}`,
+        { withCredentials: true }
       );
       setTasks(res.data);
     } catch (err) {
