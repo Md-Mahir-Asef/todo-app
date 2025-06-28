@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import prisma from "../src/utils/prisma";
 import logger from "../src/utils/logger";
 import { Priority, TaskStatus } from "../src/generated/prisma";
+import { hasher } from "../src/utils/hasher";
 
 const USERS = 50;
 const TODO_PER_USER = 10;
@@ -18,7 +19,7 @@ async function main() {
         data: {
           name: faker.person.fullName(),
           email: faker.internet.email(),
-          password: faker.internet.password(),
+          password: hasher(faker.internet.password()),
         },
       });
       users.push(newUser);
