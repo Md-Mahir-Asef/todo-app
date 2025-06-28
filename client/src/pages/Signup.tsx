@@ -1,19 +1,33 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate();
+
   const signUpHandeler = async () => {
-    const res = axios.post(`${baseUrl}/api/user/sign-up`, {
-      name,
-      email,
-      password,
-    });
-    console.log(res);
+    try {
+      const res = await axios.post(
+        `${baseUrl}/user/sign-up`,
+        {
+          name,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      if (res.data.token) {
+        alert("Authentication Successful.");
+        navigate("/");
+      }
+    } catch (err) {
+      alert("Authentication Failed.");
+    }
   };
 
   return (
