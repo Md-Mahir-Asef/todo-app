@@ -24,13 +24,13 @@ export function Update() {
     e.preventDefault();
     try {
       const baseUrl = import.meta.env.VITE_API_BASE_URL;
-      const response = await axios.put(`${baseUrl}/tasks/${id}`, {
+      const response = await axios.put(`${baseUrl}/user/task/${id}`, {
         title,
         description,
         priority,
         dueDate,
         status,
-      });
+      }, {withCredentials: true});
       console.log(response);
       navigate("/");
     } catch (error) {

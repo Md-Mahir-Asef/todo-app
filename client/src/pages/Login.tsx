@@ -1,13 +1,18 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const Login = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const logInhandeler = async () => {
+    try {
+      // const res = axios.post
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-6">
@@ -26,7 +31,8 @@ export const Login = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              value={email}
+              onChange={(e)=> setEmail(e.target.value)}
               placeholder="Enter email..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
             />
@@ -40,16 +46,18 @@ export const Login = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
+              value={password}
+              onChange={(e)=> setPassword(e.target.value)}
               placeholder="Enter password..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
             />
           </div>
           <button
             type="button"
+            onClick={logInhandeler}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
-            Sign In
+            Log In
           </button>
         </div>
 

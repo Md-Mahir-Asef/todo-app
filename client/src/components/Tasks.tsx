@@ -23,8 +23,8 @@ export function Tasks() {
   const loadTasks = async () => {
     try {
       setLoading(true);
-      const res = await axios.get<TaskType[]>(
-        `${baseUrl}/tasks/${sortFeild}/${sortOrder}`,
+      const res = await axios.get(
+        `${baseUrl}/user/task/${sortFeild}/${sortOrder}`,
         { withCredentials: true }
       );
       setTasks(res.data);
@@ -34,6 +34,8 @@ export function Tasks() {
       } else {
         console.log(err);
       }
+      alert("Please, Login to view your tasks.");
+      navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -42,7 +44,10 @@ export function Tasks() {
   const handleDelete = async (id: string) => {
     try {
       const deletedTask = await axios.delete<TaskType>(
-        `${baseUrl}/tasks/${id}`
+        `${baseUrl}/user/task/${id}`,
+        {
+          withCredentials: true,
+        }
       );
       console.log(deletedTask);
       setShowDeleteDialogue(true);

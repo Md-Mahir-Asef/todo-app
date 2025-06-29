@@ -16,13 +16,17 @@ export function Create() {
     console.log("Create Task Called!");
     try {
       const baseUrl = import.meta.env.VITE_API_BASE_URL;
-      const response = await axios.post(`${baseUrl}/tasks`, {
-        title,
-        description,
-        priority,
-        dueDate,
-        status,
-      });
+      const response = await axios.post(
+        `${baseUrl}/user/task`,
+        {
+          title,
+          description,
+          priority,
+          dueDate,
+          status,
+        },
+        { withCredentials: true }
+      );
       console.log(response);
       navigate("/");
     } catch (error) {
