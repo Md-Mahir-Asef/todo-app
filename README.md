@@ -8,12 +8,8 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Environment Variables](#-environment-variables)
-- [Docker Setup](#-docker-setup)
 - [What I Learned](#-what-i-learned)
-- [License](#-license)
+- [Getting Started](#-getting-started)
 
 ---
 
@@ -45,19 +41,29 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 
 > Completed
 
-- [ ] Create, update, delete todos
-- [ ] Toggle complete/incomplete
-- [ ] Store todos in database
+- Create, update, delete todos
+- Store todos in database
+- User authentication
+- Persistent login (JWT / cookies)
+- Logging in server side with Winston
 
 > In Progress
 
-- [ ] User authentication
-- [ ] Persistent login (JWT / cookies)
-- [ ] Filter/search todos
-- [ ] Responsive UI
-- [ ] CI/CD setup
+- Filter/search todos
+- CI/CD setup
+- Email verification
 
 ---
+
+## 📖 What I Learned
+
+- Containerizing my project with Docker
+- Managing containers with Docker Compose
+- User authentication
+- Persistent login with JWT and cookies
+- Logging in server side with Winston
+- Seeding dummy information into database in development environment
+- Managing database schema and migrations with Prisma
 
 ## 🚀 Getting Started
 
@@ -69,7 +75,7 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 ### Local Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/todo-app.git
+git clone https://github.com/Md-Mahir-Asef/todo-app.git
 cd todo-app
 docker-compose up --build
 ```
