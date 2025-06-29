@@ -4,8 +4,8 @@ import logger from "../src/utils/logger";
 import { Priority, TaskStatus } from "../src/generated/prisma";
 import { hasher } from "../src/utils/hasher";
 
-const USERS = 50;
-const TODO_PER_USER = 10;
+const USERS = 10;
+const TODO_PER_USER = 5;
 const priorityStrs = ["Not_set", "Low", "Medium", "High"];
 const statusStrs = ["Todo", "Doing", "Done"];
 

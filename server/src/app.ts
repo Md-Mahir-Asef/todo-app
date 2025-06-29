@@ -3,10 +3,12 @@ import routes from "./routes";
 import cors from "cors";
 import { config } from "dotenv";
 import { requestLogger } from "./middleware/requestLogger";
+import cookieParser from "cookie-parser";
 config();
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors({ origin: process.env.SERVER_CLIENT_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(requestLogger);
