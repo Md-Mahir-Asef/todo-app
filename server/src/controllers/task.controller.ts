@@ -6,22 +6,31 @@ import { AuthenticatedRequest } from "../utils/types/user";
 
 export const createTask = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { title, description, priority, dueDate, status }: TaskType =
-      req.body;
+    const {
+      title = "Untitled Task",
+      description = "No Description",
+      priority = "Not_set",
+      dueDate = "",
+      status = "Todo",
+    }: TaskType = req.body;
     var newDueDate: string | undefined;
     if (dueDate) {
       newDueDate = new Date(dueDate).toISOString();
+    } else {
+      newDueDate = undefined;
     }
-    const data = {
-      title,
-      description,
-      priority,
-      dueDate: newDueDate,
-      status,
-      userId: req.user?.id,
-    };
+    if (!req.user) {
+      throw new Error("Unauthenticated.");
+    }
     const newTask = await prisma.task.create({
-      data,
+      data: {
+        title,
+        description,
+        priority,
+        dueDate: newDueDate,
+        status,
+        userId: req.user.id,
+      },
     });
     logger.info(`CREATED TASK ${newTask.id} .`, {
       action: "CREATE",
@@ -43,7 +52,6 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
         taskId: req.body.id,
         taskTitle: req.body.title,
       },
-
       error: err,
     });
     res.status(500).json({

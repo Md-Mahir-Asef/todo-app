@@ -27,7 +27,10 @@ export function Tasks() {
         `${baseUrl}/user/task/${sortFeild}/${sortOrder}`,
         { withCredentials: true }
       );
-      setTasks(res.data);
+      if (!res.data.success) {
+        throw new Error("Can't Load Tasks.");
+      }
+      setTasks(res.data.data.tasks);
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
@@ -105,7 +108,10 @@ export function Tasks() {
         </div>
         {tasks.map((task) => {
           return (
-            <div className="w-full max-w-2xl rounded-lg border border-gray-200 bg-gradient-to-br from-white to-blue-50 px-6 py-3 shadow-sm mb-4">
+            <div
+              key={task.id}
+              className="w-full max-w-2xl rounded-lg border border-gray-200 bg-gradient-to-br from-white to-blue-50 px-6 py-3 shadow-sm mb-4"
+            >
               <div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-bold text-blue-700">
                   {task.title}

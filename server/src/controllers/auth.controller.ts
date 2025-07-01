@@ -37,7 +37,8 @@ export const signUp = async (req: Request, res: Response) => {
       userName: newUser.name,
     });
     res.cookie("token", token, {
-      httpOnly: true,
+      // httpOnly: true,
+      httpOnly: false,
       secure: false,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: "lax",
@@ -47,6 +48,7 @@ export const signUp = async (req: Request, res: Response) => {
       success: true,
       data: {
         token: token,
+        user: newUser,
       },
     });
   } catch (err) {
@@ -149,7 +151,8 @@ export const logIn = async (req: Request, res: Response) => {
         id: user?.id,
       });
       res.cookie("token", token, {
-        httpOnly: true,
+        // httpOnly: true,
+        httpOnly: false,
         secure: false,
         sameSite: "lax",
         maxAge: 1000 * 60 * 60 * 24 * 7,

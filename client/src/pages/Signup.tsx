@@ -21,12 +21,14 @@ export const Signup = () => {
         },
         { withCredentials: true }
       );
-      if (res.data.token) {
-        alert("Authentication Successful.");
-        navigate("/");
+      if (!res.data.success) {
+        throw new Error("Authentication Failed.");
       }
+      alert("Authentication Successful.");
+      navigate("/");
     } catch (err) {
       alert("Authentication Failed.");
+      console.log(err);
     }
   };
 
