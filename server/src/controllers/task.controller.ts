@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import prisma from "../utils/prisma";
 import { TaskType } from "../utils/types/task";
 import logger from "../utils/logger";
@@ -68,8 +68,9 @@ export const getSortedTasks = async (
 ) => {
   try {
     const user = req.user;
-    const sortedBy = req.params.sortedBy;
-    const sortOrder = req.params.sortOrder;
+    const sortedBy = req.params.sortedBy ?? "createdAt";
+    const sortOrder = req.params.sortOrder ?? "desc";
+
     const tasks = await prisma.task.findMany({
       where: {
         userId: user?.id,

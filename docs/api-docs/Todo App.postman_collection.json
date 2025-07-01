@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "9baddefb-71fc-43c9-bae7-6e24a22771b8",
+		"name": "Todo App",
+		"description": "# 📝 Todo App API\n\n## 🔖 Overview\n\nThis is the API collection for the **Todo App**, a RESTful API service that supports user authentication and task management features. The API is designed to be consumed by frontend clients (such as a React app), and it follows standard REST principles using HTTP verbs and status codes.\n\n---\n\n## 🚀 Base URL\n\n[http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)\n\n---\n\n## 🔐 Authentication\n\nThis API uses **JWT-based authentication**.\n\n- **Login and Signup** endpoints return a JWT token.\n    \n- This token should be sent with every authenticated request as credentials.\n    \n\n---\n\n## 📁 Folders\n\nThese APIs are divided into two folders:\n\n- Auth\n    \n- Tasks\n    \n\n---\n\n## ⚙️ Endpoints\n\nThere are 8 endpoints in total. 4 in the Auth folder and 4 in the Tasks folder.\n\nEndpoints under the Auth folder:\n\n- Sign-up\n    \n- Logout\n    \n- Login\n    \n- Delete-user\n    \n\nEndpoints under the Tasks folder:",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37884508"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response contains required fields: message, success, and data\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'success', 'data');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"The 'success' field must be a boolean\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.success).to.exist.and.to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"The token field must be a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.exist;\r",
+									"    pm.expect(responseData.data.token).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"Test@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/sign-up",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"sign-up"
+							]
+						},
+						"description": "## User Sign-Up API\n\nThis endpoint is used to register a new user in the system. It allows users to create an account by providing their name, email, and password. Upon successful registration, the API returns a token that can be used for authentication in subsequent requests.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://localhost:8000/api/v1/user/sign-up`\n    \n\n#### Request Body\n\nThe request body must be in JSON format and should include the following fields:\n\n| Parameter | Type | Description |\n| --- | --- | --- |\n| name | string | The name of the user. |\n| email | string | The email address of the user. It should be unique. |\n| password | string | The password for the user account. It should meet security requirements. |\n\n**Example Request Body:**\n\n``` json\n{\n  \"name\": \"user\",\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"Test@123\"\n}\n\n ```\n\n### Response\n\nOn a successful registration, the API responds with a JSON object containing the following fields:\n\n| Parameter | Type | Description |\n| --- | --- | --- |\n| message | string | A message indicating the result of the request (may be empty). |\n| success | boolean | Indicates whether the request was successful. |\n| data | object | Contains additional data related to the registration. |\n| token | string | A token that can be used for authenticating future requests. |\n\n**Example Response:**\n\n``` json\n{\n  \"message\": \"\",\n  \"success\": true,\n  \"data\": {\n    \"token\": \"\"\n  }\n}\n\n ```\n\n### Notes\n\n- Ensure that the email provided is valid and not already registered in the system.\n    \n- The password should adhere to security standards to ensure account safety."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields: message and success\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'success');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Success field must be of boolean type\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.success).to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"The message must be a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"logout"
+							]
+						},
+						"description": "## Logout User\n\nThis endpoint allows a user to log out from their current session. Upon successful execution, it invalidates the user's session and returns a confirmation of the logout action.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://localhost:8000/api/v1/user/logout`\n    \n\n### Expected Input Parameters\n\nThis endpoint does not require any input parameters in the request body.\n\n### Response Structure\n\nOn successful logout, the response will be in JSON format with the following structure:\n\n- **message**: A string that may contain additional information about the logout process (may be empty).\n    \n- **success**: A boolean indicating the success of the logout operation.\n    \n\n#### Example Response\n\n``` json\n{\n    \"message\": \"\",\n    \"success\": true\n}\n\n ```\n\n### Notes\n\n- A successful response (HTTP Status 200) indicates that the user has been logged out successfully."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'authenticated', 'success');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Authenticated field is a boolean\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.authenticated).to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"The success field must be a boolean\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.have.property('success').that.is.a('boolean');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mahir@email.com\",\r\n    \"password\": \"pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						},
+						"description": "## User Login API\n\nThis endpoint allows users to authenticate by logging into their account.\n\n### Request\n\n- **Method**: `POST`\n    \n- **Endpoint**: `http://localhost:8000/api/v1/user/login`\n    \n- **Request Body**: The request should include a JSON object with the following parameters:\n    \n    - `email` (string): The email address of the user.\n        \n    - `password` (string): The password associated with the user's account.\n        \n\n### Example Request Body\n\n``` json\n{\n  \"email\": \"user@example.com\",\n  \"password\": \"your_password\"\n}\n\n ```\n\n### Response\n\nUpon successful authentication, the server responds with a JSON object containing the following fields:\n\n- `message` (string): A message regarding the login attempt.\n    \n- `authenticated` (boolean): Indicates whether the user is successfully authenticated.\n    \n- `success` (boolean): Indicates whether the login operation was successful.\n    \n\n### Example Response\n\n``` json\n{\n  \"message\": \"\",\n  \"authenticated\": true,\n  \"success\": true\n}\n\n ```\n\n### Status Codes\n\n- **200 OK**: Indicates that the login was successful."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'data', 'success');\r",
+									"    pm.expect(responseData.message).to.exist;\r",
+									"    pm.expect(responseData.data).to.exist;\r",
+									"    pm.expect(responseData.success).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data object contains a valid ID\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.be.an('object').that.includes.keys('id');\r",
+									"    pm.expect(responseData.data.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"ID should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Success field is a boolean value\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.success).to.be.a('boolean');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/68345359-1bfb-4f21-8a43-96cbd448b318",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"68345359-1bfb-4f21-8a43-96cbd448b318"
+							]
+						},
+						"description": "### DELETE User Endpoint\n\nThis endpoint allows you to delete a user from the system using their unique identifier.\n\n- **HTTP Method:** `DELETE`\n    \n- **Endpoint:** `http://localhost:8000/api/v1/user/{userId}`\n    \n    - Replace `{userId}` with the unique ID of the user you wish to delete.\n        \n\n#### Request Parameters\n\n- **Path Parameter:**\n    \n    - `userId` (string): The unique identifier of the user to be deleted.\n        \n\n#### Expected Response\n\nOn a successful deletion, the API will return a JSON response with the following structure:\n\n- **Status Code:** `200 OK`\n    \n- **Content-Type:** `application/json`\n    \n- { \"message\": \"\", \"data\": { \"id\": \"\" }, \"success\": true}\n    \n    - `message`: A string that may contain additional information about the request.\n        \n    - `data`: An object containing the `id` of the deleted user.\n        \n    - `success`: A boolean indicating the success of the operation.\n        \n\nEnsure that you have the necessary permissions to delete a user before making this request."
+					},
+					"response": []
+				}
+			],
+			"description": "# 🔐 Auth API Documentation\n\nThis section of the Todo App API handles all user authentication-related operations, including account creation, login, logout, and user deletion.\n\nBase URL for all endpoints:  \n`http://localhost:8000/api/v1/auth`\n\n## ⚙️ Endpoints\n\nHere are the endpoints under Auth folder:\n\n- Sign-up\n    \n- Logout\n    \n- Login\n    \n- Delete-user"
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.status).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'data', 'success');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the task object structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('data').that.is.an('object');\r",
+									"    pm.expect(responseData.data).to.have.property('task').that.is.an('object');\r",
+									"    \r",
+									"    const task = responseData.data.task;\r",
+									"    \r",
+									"    pm.expect(task).to.include.keys('id', 'title', 'description', 'createdAt', 'updatedAt', 'priority', 'dueDate', 'status', 'userId');\r",
+									"    \r",
+									"    pm.expect(task.id).to.be.a('string');\r",
+									"    pm.expect(task.title).to.be.a('string');\r",
+									"    pm.expect(task.description).to.be.a('string');\r",
+									"    pm.expect(task.createdAt).to.be.a('string');\r",
+									"    pm.expect(task.updatedAt).to.be.a('string');\r",
+									"    pm.expect(task.priority).to.be.a('string');\r",
+									"    pm.expect(task.dueDate).to.be.a('string');\r",
+									"    pm.expect(task.status).to.be.a('string');\r",
+									"    pm.expect(task.userId).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"DueDate is in a valid date format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.have.property('task');\r",
+									"    pm.expect(responseData.data.task).to.have.property('dueDate');\r",
+									"\r",
+									"    const dueDate = responseData.data.task.dueDate;\r",
+									"    const datePattern = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/; // ISO 8601 format\r",
+									"\r",
+									"    pm.expect(dueDate).to.match(datePattern, \"DueDate is not in a valid date format\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{$randomVerb}}\",\r\n    \"description\": \"{{$randomJobDescriptor}}\",\r\n    \"priority\": \"High\",\r\n    \"dueDate\": \"7/1/2025\",\r\n    \"status\": \"Todo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/task/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"task",
+								""
+							]
+						},
+						"description": "## Add Task Endpoint\n\nThis endpoint allows users to create a new task by submitting a POST request to the specified URL.\n\n### Request\n\n- **Method**: POST\n    \n- **Endpoint**: `http://localhost:8000/api/v1/user/task/`\n    \n\n#### Request Body\n\nThe request body must be in JSON format and include the following parameters:\n\n- **title** (string): The title of the task. This should be a brief description of the task (Optional). (Default: \"Untitled Task\")\n    \n- **description** (string): A detailed description of the task (Optional). (Default: \"No Description.\")\n    \n- **priority** (string): The priority level of the task. Acceptable values include \"Not_set\", \"High\", \"Medium\", or \"Low\" (Optional). (Default: \"Not_set\")\n    \n- **dueDate** (string): The due date for the task in MM/DD/YYYY format (Optional). (Default: \"null\")\n    \n- **status** (string): The current status of the task. Common values include \"Todo\", \"Doing\", or \"Done\" (Optional). (Default: \"Todo\")\n    \n\nExample of a request body:\n\n``` json\n{\n  \"title\": \"Sample Task Title\",\n  \"description\": \"Sample Task Description\",\n  \"priority\": \"High\",\n  \"dueDate\": \"7/1/2025\",\n  \"status\": \"Todo\"\n}\n\n ```\n\n### Response\n\nUpon a successful request, the server will respond with a status code of 200 and a JSON object containing the following structure:\n\n- **message** (string): A message indicating the result of the operation (may be empty).\n    \n- **data** (object): Contains the details of the created task.\n    \n    - **task** (object): The task object that includes:\n        \n        - **id** (string): The unique identifier for the task.\n            \n        - **title** (string): The title of the task.\n            \n        - **description** (string): The description of the task.\n            \n        - **createdAt** (string): Timestamp of when the task was created.\n            \n        - **updatedAt** (string): Timestamp of the last update to the task.\n            \n        - **priority** (string): The priority level of the task.\n            \n        - **dueDate** (string): The due date of the task.\n            \n        - **status** (string): The current status of the task.\n            \n        - **userId** (string): The identifier of the user who created the task.\n            \n- **success** (boolean): Indicates whether the request was successful.\n    \n\nExample of a successful response:\n\n``` json\n{\n  \"message\": \"\",\n  \"data\": {\n    \"task\": {\n      \"id\": \"12345\",\n      \"title\": \"Sample Task Title\",\n      \"description\": \"Sample Task Description\",\n      \"createdAt\": \"2023-10-01T12:00:00Z\",\n      \"updatedAt\": \"2023-10-01T12:00:00Z\",\n      \"priority\": \"High\",\n      \"dueDate\": \"7/1/2025\",\n      \"status\": \"Todo\",\n      \"userId\": \"67890\"\n    }\n  },\n  \"success\": true\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sorted Tasks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'data', 'success');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the tasks array in the data object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.have.property('tasks').that.is.an('array');\r",
+									"\r",
+									"    responseData.data.tasks.forEach(function(task) {\r",
+									"        pm.expect(task).to.be.an('object');\r",
+									"        pm.expect(task).to.have.all.keys('id', 'title', 'description', 'createdAt', 'updatedAt', 'priority', 'dueDate', 'status', 'userId');\r",
+									"        pm.expect(task.id).to.be.a('string');\r",
+									"        pm.expect(task.title).to.be.a('string');\r",
+									"        pm.expect(task.description).to.be.a('string');\r",
+									"        pm.expect(task.createdAt).to.be.a('string');\r",
+									"        pm.expect(task.updatedAt).to.be.a('string');\r",
+									"        pm.expect(task.priority).to.be.a('string');\r",
+									"        pm.expect(task.dueDate).to.be.a('string');\r",
+									"        pm.expect(task.status).to.be.a('string');\r",
+									"        pm.expect(task.userId).to.be.a('string');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Each task object contains the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.have.property('tasks').that.is.an('array');\r",
+									"    \r",
+									"    responseData.data.tasks.forEach(task => {\r",
+									"        pm.expect(task).to.be.an('object').that.includes.all.keys('id', 'title', 'description', 'createdAt', 'updatedAt', 'priority', 'dueDate', 'status', 'userId');\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/task/createdAt/desc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"task",
+								"createdAt",
+								"desc"
+							]
+						},
+						"description": "## Endpoint Description\n\nThis endpoint retrieves a list of tasks created by users, sorted in descending or ascending order based on their creation date, update date, due date, priority or status. It is useful for applications that need to display tasks or manage task-related functionalities.\n\n### HTTP Method\n\n`GET`\n\n### Request URL\n\n`http://localhost:8000/api/v1/user/task/{sortedBy}/{sortOrder}`\n\n### Request Parameters\n\nThis endpoint requires two request parameters, one is **sortedBy** and another one is **sortOrder.**  \nPossible values of **sortedBy**:\n\n- createdAt\n    \n- updatedAt\n    \n- dueDate\n    \n- priority\n    \n- status\n    \n\nAnd the possible values of **sortOrder**:\n\n- asc\n    \n- desc\n    \n\nDefault values of **sortedBy** is **creatdAt** and default value of **sortOrder** is desc.  \nif the parameters are wrong, this api will give a 404 not found status code.\n\n### Response Structure\n\nOn successful execution, the response will return a JSON object with the following structure:\n\n- `message`: A string that may contain additional information about the response (empty in this case).\n    \n- `data`: An object containing:\n    \n    - `tasks`: An array of task objects, where each task object includes:\n        \n        - `id`: The unique identifier for the task.\n            \n        - `title`: The title of the task.\n            \n        - `description`: A brief description of the task.\n            \n        - `createdAt`: The timestamp indicating when the task was created.\n            \n        - `updatedAt`: The timestamp indicating the last update time of the task.\n            \n        - `priority`: The priority level of the task.\n            \n        - `dueDate`: The date by which the task should be completed.\n            \n        - `status`: The current status of the task (e.g., pending, completed).\n            \n        - `userId`: The identifier of the user who created the task.\n            \n- `success`: A boolean indicating whether the request was successful.\n    \n\n### Example Response\n\n``` json\n{\n  \"message\": \"\",\n  \"data\": {\n    \"tasks\": [\n      {\n        \"id\": \"\",\n        \"title\": \"\",\n        \"description\": \"\",\n        \"createdAt\": \"\",\n        \"updatedAt\": \"\",\n        \"priority\": \"\",\n        \"dueDate\": \"\",\n        \"status\": \"\",\n        \"userId\": \"\"\n      }\n    ]\n  },\n  \"success\": true\n}\n\n ```\n\nThis endpoint is particularly useful for applications that need to display or manage user tasks based on their creation date."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
