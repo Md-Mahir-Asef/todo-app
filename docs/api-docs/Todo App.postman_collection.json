@@ -310,7 +310,7 @@
 					"response": []
 				}
 			],
-			"description": "# 🔐 Auth API Documentation\n\nThis section of the Todo App API handles all user authentication-related operations, including account creation, login, logout, and user deletion.\n\nBase URL for all endpoints:  \n`http://localhost:8000/api/v1/auth`\n\n## ⚙️ Endpoints\n\nHere are the endpoints under Auth folder:\n\n- Sign-up\n    \n- Logout\n    \n- Login\n    \n- Delete-user"
+			"description": "# 🔐 Auth API Documentation\n\nThis section of the Todo App API handles all user authentication-related operations, including account creation, login, logout, and user deletion.\n\nBase URL for all endpoints:  \n`http://localhost:8000/api/v1/user`\n\n## ⚙️ Endpoints\n\nHere are the endpoints under Auth folder:\n\n- Sign Up\n    \n- Logout\n    \n- Login\n    \n- Delete User"
 		},
 		{
 			"name": "Tasks",
@@ -380,6 +380,13 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -387,7 +394,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"{{$randomVerb}}\",\r\n    \"description\": \"{{$randomJobDescriptor}}\",\r\n    \"priority\": \"High\",\r\n    \"dueDate\": \"7/1/2025\",\r\n    \"status\": \"Todo\"\r\n}",
+							"raw": "{\r\n    \"title\": \"{{$randomVerb}}\",\r\n    \"description\": \"{{$randomJobDescriptor}}\",\r\n    \"priority\": \"Medium\",\r\n    \"dueDate\": \"7/1/2035\",\r\n    \"status\": \"Done\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -499,8 +506,127 @@
 						"description": "## Endpoint Description\n\nThis endpoint retrieves a list of tasks created by users, sorted in descending or ascending order based on their creation date, update date, due date, priority or status. It is useful for applications that need to display tasks or manage task-related functionalities.\n\n### HTTP Method\n\n`GET`\n\n### Request URL\n\n`http://localhost:8000/api/v1/user/task/{sortedBy}/{sortOrder}`\n\n### Request Parameters\n\nThis endpoint requires two request parameters, one is **sortedBy** and another one is **sortOrder.**  \nPossible values of **sortedBy**:\n\n- createdAt\n    \n- updatedAt\n    \n- dueDate\n    \n- priority\n    \n- status\n    \n\nAnd the possible values of **sortOrder**:\n\n- asc\n    \n- desc\n    \n\nDefault values of **sortedBy** is **creatdAt** and default value of **sortOrder** is desc.  \nif the parameters are wrong, this api will give a 404 not found status code.\n\n### Response Structure\n\nOn successful execution, the response will return a JSON object with the following structure:\n\n- `message`: A string that may contain additional information about the response (empty in this case).\n    \n- `data`: An object containing:\n    \n    - `tasks`: An array of task objects, where each task object includes:\n        \n        - `id`: The unique identifier for the task.\n            \n        - `title`: The title of the task.\n            \n        - `description`: A brief description of the task.\n            \n        - `createdAt`: The timestamp indicating when the task was created.\n            \n        - `updatedAt`: The timestamp indicating the last update time of the task.\n            \n        - `priority`: The priority level of the task.\n            \n        - `dueDate`: The date by which the task should be completed.\n            \n        - `status`: The current status of the task (e.g., pending, completed).\n            \n        - `userId`: The identifier of the user who created the task.\n            \n- `success`: A boolean indicating whether the request was successful.\n    \n\n### Example Response\n\n``` json\n{\n  \"message\": \"\",\n  \"data\": {\n    \"tasks\": [\n      {\n        \"id\": \"\",\n        \"title\": \"\",\n        \"description\": \"\",\n        \"createdAt\": \"\",\n        \"updatedAt\": \"\",\n        \"priority\": \"\",\n        \"dueDate\": \"\",\n        \"status\": \"\",\n        \"userId\": \"\"\n      }\n    ]\n  },\n  \"success\": true\n}\n\n ```\n\nThis endpoint is particularly useful for applications that need to display or manage user tasks based on their creation date."
 					},
 					"response": []
+				},
+				{
+					"name": "Update Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response contains success field that is true\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.success).to.exist.and.to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the schema of the data object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.exist.and.to.be.an('object');\r",
+									"    \r",
+									"    const task = responseData.data.task;\r",
+									"    pm.expect(task).to.exist.and.to.be.an('object');\r",
+									"    \r",
+									"    const requiredFields = ['id', 'title', 'description', 'createdAt', 'updatedAt', 'priority', 'dueDate', 'status', 'userId'];\r",
+									"    \r",
+									"    requiredFields.forEach(field => {\r",
+									"        pm.expect(task).to.have.property(field);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Due date is in a valid date format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data.task).to.exist;\r",
+									"    \r",
+									"    const dueDate = responseData.data.task.dueDate;\r",
+									"    pm.expect(dueDate).to.exist;\r",
+									"    pm.expect(new Date(dueDate).getTime()).to.not.be.NaN; // Check if dueDate can be parsed as a valid date\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{$randomVerb}}\",\r\n    \"description\": \"{{$randomJobDescriptor}}\",\r\n    \"priority\": \"Medium\",\r\n    \"status\": \"Done\",\r\n    \"dueDate\": \"7/6/2025\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/task/cca6adf1-106b-418a-8132-37ee5f17cb4b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"task",
+								"cca6adf1-106b-418a-8132-37ee5f17cb4b"
+							]
+						},
+						"description": "### Update Task\n\nThis endpoint allows you to update an existing task by providing the task ID in the URL. The request modifies the task details such as title, description, priority, status, and due date.\n\n#### Request Parameters\n\nThe request body must be in JSON format and include the following parameters:\n\n- **title** (string): The title of the task to be updated. (Default: \"Untitled Task\")\n    \n- **description** (string): A brief description of the task. (Default: \"No Description.\")\n    \n- **priority** (string): The priority level of the task (Not_set, Low, Medium or High). (Default: \"Not_set\")\n    \n- **status** (string): The current status of the task (Todo, Doing, Done). (Default: \"Todo\")\n    \n- **dueDate** (string): The due date for the task in MM/DD/YYYY format. (Default: null)\n    \n\n#### Response Structure\n\nUpon a successful update, the API responds with a status code of 200 and a JSON object containing the following structure:\n\n- **message** (string): A message indicating the result of the operation (empty in this case).\n    \n- **success** (boolean): Indicates whether the operation was successful.\n    \n- **data** (object): Contains the updated task details:\n    \n    - **task** (object): The updated task information, which includes:\n        \n        - **id** (string): The unique identifier of the task.\n            \n        - **title** (string): The updated title of the task.\n            \n        - **description** (string): The updated description of the task.\n            \n        - **createdAt** (string): The timestamp when the task was created.\n            \n        - **updatedAt** (string): The timestamp when the task was last updated.\n            \n        - **priority** (string): The updated priority level of the task.\n            \n        - **dueDate** (string): The updated due date of the task.\n            \n        - **status** (string): The updated status of the task.\n            \n        - **userId** (string): The ID of the user associated with the task.\n            \n\nThis endpoint is essential for maintaining and managing tasks effectively within the application."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/user/task/cca6adf1-106b-418a-8132-37ee5f17cb4b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"task",
+								"cca6adf1-106b-418a-8132-37ee5f17cb4b"
+							]
+						},
+						"description": "## Delete Task Endpoint\n\nThis endpoint allows users to delete a specific task identified by its unique ID.\n\n### Request\n\n- **Method**: `DELETE`\n    \n- **Endpoint**: `http://localhost:8000/api/v1/user/task/{taskId}`\n    \n- **Path Parameter**:\n    \n    - `taskId` (string): The unique identifier of the task to be deleted.\n        \n\n### Response\n\nUpon successful deletion of the task, the API will return a JSON response with the following structure:\n\n- **Status Code**: `200 OK`\n    \n- **Content-Type**: `application/json`\n    \n- **Response Body**:\n    \n    - `message` (string): A message indicating the result of the operation (may be empty).\n        \n    - `success` (boolean): Indicates whether the deletion was successful.\n        \n    - `data` (object): Contains details about the deleted task, including:\n        \n        - `task` (object): An object representing the deleted task with the following properties:\n            \n            - `id` (string): The unique identifier of the task.\n                \n            - `title` (string): The title of the task.\n                \n            - `description` (string): A brief description of the task.\n                \n            - `createdAt` (string): The timestamp when the task was created.\n                \n            - `updatedAt` (string): The timestamp when the task was last updated.\n                \n            - `priority` (string): The priority level of the task.\n                \n            - `dueDate` (string): The due date of the task.\n                \n            - `status` (string): The current status of the task.\n                \n            - `userId` (string): The identifier of the user who owns the task.\n                \n\n### Example Response\n\n``` json\n{\n  \"message\": \"\",\n  \"success\": true,\n  \"data\": {\n    \"task\": {\n      \"id\": \"\",\n      \"title\": \"\",\n      \"description\": \"\",\n      \"createdAt\": \"\",\n      \"updatedAt\": \"\",\n      \"priority\": \"\",\n      \"dueDate\": \"\",\n      \"status\": \"\",\n      \"userId\": \"\"\n    }\n  }\n}\n\n ```\n\nThis endpoint is useful for managing tasks within the user's account by allowing them to remove tasks that are no longer needed."
+					},
+					"response": []
 				}
-			]
+			],
+			"description": "# ✔️ Tasks API Documentation\n\nThis section of the Todo App API handles all task related operations, including task creation, getting sorted tasks, updating tasks, and task deletion.\n\nBase URL for all endpoints:  \n`http://localhost:8000/api/v1/user/task`\n\n## ⚙️ Endpoints\n\nHere are the endpoints under Tasks folder:\n\n- Create Task\n    \n- Get Sorted Tasks\n    \n- Update Task\n    \n- Delete Task"
 		}
 	]
 }
