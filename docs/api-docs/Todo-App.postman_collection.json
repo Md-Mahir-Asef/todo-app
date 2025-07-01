@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9baddefb-71fc-43c9-bae7-6e24a22771b8",
 		"name": "Todo App",
-		"description": "# 📝 Todo App API\n\n## 🔖 Overview\n\nThis is the API collection for the **Todo App**, a RESTful API service that supports user authentication and task management features. The API is designed to be consumed by frontend clients (such as a React app), and it follows standard REST principles using HTTP verbs and status codes.\n\n---\n\n## 🚀 Base URL\n\n[http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)\n\n---\n\n## 🔐 Authentication\n\nThis API uses **JWT-based authentication**.\n\n- **Login and Signup** endpoints return a JWT token.\n    \n- This token should be sent with every authenticated request as credentials.\n    \n\n---\n\n## 📁 Folders\n\nThese APIs are divided into two folders:\n\n- Auth\n    \n- Tasks\n    \n\n---\n\n## ⚙️ Endpoints\n\nThere are 8 endpoints in total. 4 in the Auth folder and 4 in the Tasks folder.\n\nEndpoints under the Auth folder:\n\n- Sign-up\n    \n- Logout\n    \n- Login\n    \n- Delete-user\n    \n\nEndpoints under the Tasks folder:",
+		"description": "# 📝 Todo App API\n\n## 🔖 Overview\n\nThis is the API collection for the **Todo App**, a RESTful API service that supports user authentication and task management features. The API is designed to be consumed by frontend clients (such as a React app), and it follows standard REST principles using HTTP verbs and status codes.\n\n---\n\n## 🚀 Base URL\n\n[http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)\n\n---\n\n## 🔐 Authentication\n\nThis API uses **JWT-based authentication**.\n\n- **Login and Signup** endpoints return a JWT token.\n    \n- This token should be sent with every authenticated request as credentials.\n    \n\n---\n\n## 📁 Folders\n\nThese APIs are divided into two folders:\n\n- Auth\n    \n- Tasks\n    \n\n---\n\n## ⚙️ Endpoints\n\nThere are 8 endpoints in total. 4 in the Auth folder and 4 in the Tasks folder.\n\nEndpoints under the Auth folder:\n\n- Sign-up\n    \n- Logout\n    \n- Login\n    \n- Delete-user\n    \n\nEndpoints under the Tasks folder:\n\n- Create Task\n    \n- Get Sorted Tasks\n    \n- Update Task\n    \n- Delete Task",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37884508"
 	},
@@ -603,6 +603,52 @@
 				},
 				{
 					"name": "Delete Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.all.keys('message', 'success', 'data');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Success is a boolean value\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.success).to.exist.and.to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Deleted task data contains the correct task ID\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.data).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseData.data.task).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseData.data.task.id).to.exist.and.to.be.a('string').and.to.equal(\"cca6adf1-106b-418a-8132-37ee5f17cb4b\", \"Task ID should match the deleted task's ID\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],

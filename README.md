@@ -10,6 +10,7 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 - [Features](#-features)
 - [What I Learned](#-what-i-learned)
 - [Getting Started](#-getting-started)
+- [API Documentation](#-api-documentation)
 
 ---
 
@@ -52,6 +53,23 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 - [ ] Filter/search todos
 - [ ] CI/CD setup
 - [ ] Email verification
+
+---
+
+## 📝 API Documentation
+
+### 📦 Postman Collection
+
+- Download or import the full Postman collection:  
+  [todo-app-collection.json](./docs/api-docs/Todo-App.postman_collection.json)
+
+### 📘 Human-Readable Docs (Markdown)
+
+- See [docs/api-docs.md](./docs/API-Documentation.md) for detailed endpoint documentation.
+
+### 🌐 Online Docs (Optional)
+
+- Live docs hosted via Postman: [View Here](https://documenter.getpostman.com/view/)
 
 ---
 
