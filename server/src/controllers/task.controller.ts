@@ -1,23 +1,19 @@
 import { Response } from "express";
 import prisma from "../utils/prisma";
-import { TaskType } from "../utils/types/task";
 import logger from "../utils/logger";
 import { AuthenticatedRequest } from "../utils/types/user";
+import { TaskDataSchema } from "../utils/zodSchemas";
+import { ZodError } from "zod/v4";
 
 export const createTask = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const {
-      title = "Untitled Task",
-      description = "No Description",
-      priority = "Not_set",
-      dueDate = "",
-      status = "Todo",
-    }: TaskType = req.body;
-    var newDueDate: string | undefined;
+    const reqBody = TaskDataSchema.parse(req.body);
+    const { title, description, priority, dueDate, status } = reqBody;
+    var newDueDate: string | null;
     if (dueDate) {
       newDueDate = new Date(dueDate).toISOString();
     } else {
-      newDueDate = undefined;
+      newDueDate = null;
     }
     if (!req.user) {
       throw new Error("Unauthenticated.");
@@ -108,8 +104,14 @@ export const getSortedTasks = async (
 export const updateTask = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const id = req.params.id;
-    const { title, description, priority, dueDate, status } = req.body;
-    var newDueDate = new Date(dueDate).toISOString();
+    const reqBody = TaskDataSchema.parse(req.body);
+    const { title, description, priority, dueDate, status } = reqBody;
+    var newDueDate: string | null;
+    if (dueDate) {
+      newDueDate = new Date(dueDate).toISOString();
+    } else {
+      newDueDate = null;
+    }
     const updatedTask = await prisma.task.update({
       where: {
         id: id,
@@ -123,7 +125,7 @@ export const updateTask = async (req: AuthenticatedRequest, res: Response) => {
         userId: req.user?.id,
       },
     });
-    logger.info(`UPDATED TASK ${updatedTask.id} .`, {
+    logger.info(`Updated Task ${updatedTask.id} .`, {
       action: "UPDATE",
       entity: "Task",
       taskTitle: updatedTask.title,
@@ -142,6 +144,13 @@ export const updateTask = async (req: AuthenticatedRequest, res: Response) => {
       id: req.params.id,
       error: err,
     });
+    if (err instanceof ZodError) {
+      res.status(400).json({
+        message: "Invalid Information",
+        error: err.message,
+        success: false,
+      });
+    }
     res.status(500).json({
       message: "Failed to update task.",
       error: err instanceof Error ? err.message : "Unknown Error Occured.",
