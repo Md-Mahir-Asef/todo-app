@@ -9,5 +9,5 @@
 # Server folders
 /server/node_modules
 /server/.env
-/server/src/
+/server/src/generated
 /server/logs
