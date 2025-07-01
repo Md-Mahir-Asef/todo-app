@@ -41,17 +41,17 @@ A full-stack Todo application built using modern technologies like TypeScript, V
 
 > Completed
 
-- Create, update, delete todos
-- Store todos in database
-- User authentication
-- Persistent login (JWT / cookies)
-- Logging in server side with Winston
+- [x] Create, update, delete todos
+- [x] Store todos in database
+- [x] User authentication
+- [x] Persistent login (JWT / cookies)
+- [x] Logging in server side with Winston
 
 > In Progress
 
-- Filter/search todos
-- CI/CD setup
-- Email verification
+- [ ] Filter/search todos
+- [ ] CI/CD setup
+- [ ] Email verification
 
 ---
 
