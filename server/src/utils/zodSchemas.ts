@@ -12,3 +12,14 @@ export const TaskDataSchema = z.object({
     .transform((date) => new Date(date).toISOString()),
   status: z.enum(["Todo", "Doing", "Done"]).default("Todo"),
 });
+
+export const UserDataSchema = z.object({
+  name: z.string().min(3).max(32),
+  email: z.email(),
+  password: z.string().min(4).max(32),
+});
+
+export const LogInUserDateSchema = z.object({
+  email: z.email(),
+  password: z.string().min(4).max(32),
+});

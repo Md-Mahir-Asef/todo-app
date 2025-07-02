@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import prisma from "../utils/prisma";
 import logger from "../utils/logger";
-import { User } from "../generated/prisma";
 import { hasher } from "../utils/hasher";
 import { generateToken } from "../utils/token";
 import { compareSync } from "bcrypt";
 import { AuthenticatedRequest } from "../utils/types/user";
+import { LogInUserDateSchema, UserDataSchema } from "../utils/zodSchemas";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
-    const { name, email, password }: User = req.body;
+    const userDate = UserDataSchema.parse(req.body);
+    const { name, email, password } = userDate;
     const hashedPass = hasher(password);
     const newUser = await prisma.user.create({
       data: {
@@ -37,8 +38,7 @@ export const signUp = async (req: Request, res: Response) => {
       userName: newUser.name,
     });
     res.cookie("token", token, {
-      // httpOnly: true,
-      httpOnly: false,
+      httpOnly: true,
       secure: false,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: "lax",
@@ -71,7 +71,10 @@ export const signUp = async (req: Request, res: Response) => {
 
 export const logOut = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const userId = req.user?.id;
+    if (!req.user) {
+      throw new Error("Log Out failed.");
+    }
+    const userId = req.user.id;
     res.clearCookie("token", {
       httpOnly: true,
       secure: false,
@@ -139,7 +142,8 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const logIn = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const userDate = LogInUserDateSchema.parse(req.body);
+    const { email, password } = userDate;
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -151,8 +155,7 @@ export const logIn = async (req: Request, res: Response) => {
         id: user?.id,
       });
       res.cookie("token", token, {
-        // httpOnly: true,
-        httpOnly: false,
+        httpOnly: true,
         secure: false,
         sameSite: "lax",
         maxAge: 1000 * 60 * 60 * 24 * 7,
