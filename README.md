@@ -1,6 +1,6 @@
 # 📝 Todo App
 
-A full-stack Todo application built using modern technologies like TypeScript, Vite, React, Node.js, Docker, Prisma, and PostgreSQL. Todo App lets you manage you tasks (Create, View, Update and Delete) with a user friendly UI. It is fully containerized so it is easy to diploy. It follows basic security principles. It manages user authentication by it self. It persists log in with JWT. It does clear and verbose logging in the server side so it is easy to debug 
+A full-stack Todo application built using modern technologies like TypeScript, Vite, React, Node.js, Docker, Prisma, and PostgreSQL. Todo App lets you manage your tasks (create, view, update, and delete) with a user-friendly UI. It is fully containerized, so it is easy to deploy. It follows basic security principles. It manages user authentication by itself. It persists the login with JWT. It does clear and verbose logging on the server side, so it is easy to debug, monitor performance, and do security audits. The backend is well documented and maintained with production-grade principles and best practices.
 
 ---
 
